@@ -37,7 +37,7 @@ Initialized empty Git repository in E:/study/gitStudy/repo1/.git/
 
 从远程仓库克隆 。
 
-克隆命令 `git clone 网络地址`
+克隆命令 `git clone <url>`
 
 ```
 $ git clone https://github.com/Leyusf/git_study.git
@@ -140,9 +140,130 @@ $ git commit -m "add git.md"
 
 `doc/**/*.pdf   表示doc目录及其子目录下的.txt文件都忽略`
 
+##### 查看日志记录：
+
+通过 `git log`命令
 
 
 
+#### 6.远程仓库操作
+
+##### 查看远程仓库：
+
+运行 `git remote`，会列出每一个远程服务器的简写。已经克隆的仓库至少应该看到origin。
+
+```
+$ git remote
+origin
+```
+
+```
+$ git remote -v
+origin  https://github.com/Leyusf/git_study.git (fetch)
+origin  https://github.com/Leyusf/git_study.git (push)
+```
+
+##### 添加远程仓库：
+
+运行`git remote add <shortname> <url>`添加一个新的远程git仓库，同时指定一个简写。
+
+ 一个仓库可以添加多个远程仓库。
+
+##### 远程仓库克隆：
+
+使用`git clone <url>`命令。 将该git远程仓库几乎所有的数据都克隆（日志信息，历史记录）。
+
+拉取每一个文件的每一个版本。
+
+```
+$ git clone https://github.com/Leyusf/JavaGuide.git
+Cloning into 'JavaGuide'...
+remote: Enumerating objects: 12970, done.
+remote: Total 12970 (delta 0), reused 0 (delta 0), pack-reused 12970
+Receiving objects: 100% (12970/12970), 51.84 MiB | 1.58 MiB/s, done.
+Resolving deltas: 100% (8414/8414), done.
+```
+
+##### 移除无效的远程仓库：
+
+可以使用`git remote rm <shortname>` 移除远程仓库。
+
+**注意**：此命令只从本地移除远程仓库记录，并不会真正影响到远程仓库。
+
+```
+$ git remote
+my
+origin
+$ git remote rm my
+$ git remote
+origin
+```
+
+##### 从远程仓库中抓取与拉取：
+
+`git fetch <shortname> <branch>`  或 `git fetch` 从远程仓库获取最新版本到本地仓库，不自动merge。
+
+```
+$ git fetch
+remote: Enumerating objects: 12970, done.
+remote: Total 12970 (delta 0), reused 0 (delta 0), pack-reused 12970
+Receiving objects: 100% (12970/12970), 51.84 MiB | 3.29 MiB/s, done.
+Resolving deltas: 100% (8414/8414), done.
+From https://github.com/Leyusf/JavaGuide
+ * [new branch]      master     -> origin/master
+```
+
+使用`git merge origin/master` 将抓取的文件合并到工作区。
+
+`git pull <shortname> <branch>`从远程仓库获取最新数据并merge到本地仓库。
+
+```
+$ git pull origin master
+remote: Enumerating objects: 7898, done.
+remote: Counting objects: 100% (7898/7898), done.
+remote: Compressing objects: 100% (3004/3004), done.
+remote: Total 7898 (delta 4508), reused 7886 (delta 4500), pack-reused 0
+Receiving objects: 100% (7898/7898), 5.32 MiB | 719.00 KiB/s, done.
+Resolving deltas: 100% (4508/4508), done.
+From https://gitee.com/red_coated_leaves/linux-lab
+ * branch            master     -> FETCH_HEAD
+ * [new branch]      master     -> origin/master
+```
+
+**注意**：仓库中存在文件时会报错(fatal: refusing to merge unrelated histories)。
+
+使用参数 `--allow-unrelated-histories`可以强制合并。
+
+```
+$ git pull origin master --allow-unrelated-histories
+From https://gitee.com/red_coated_leaves/linux-lab
+ * branch            master     -> FETCH_HEAD
+Merge made by the 'recursive' strategy.
+ .gdb/.gitignore                                    |     1 +
+ .gdb/kernel.default                                |    31 +
+ .gdb/uboot.default                                 |    18 +
+ .gitignore                                         |    18 +
+ .gitmodules                                        |    80 +
+ .labinit      
+```
+
+##### 推送到远程仓库:
+
+使用`git push <shortname> <branch>`将代码推送至远程仓库。
+
+```
+$ git push origin master
+Logon failed, use ctrl+c to cancel basic credential prompt.
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (13/13), 2.42 KiB | 1.21 MiB/s, done.
+Total 13 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), done.
+To https://github.com/Leyusf/git_study.git
+ * [new branch]      master -> master
+```
 
 
 
