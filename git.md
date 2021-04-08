@@ -107,15 +107,23 @@ A  git.md
 
 命令 `git reset filename`取消暂存
 
-##### 提交暂存区文件到不稳地仓库：
+##### 提交暂存区文件到本地仓库：
 
-命令 `git commit -m "message" 提交文件`
+命令 `git commit -m "message" <filename>`
 
 ```
 $ git commit -m "add git.md"
 [master (root-commit) d18ef13] add git.md
  1 file changed, 76 insertions(+)
  create mode 100644 git.md
+```
+
+直接将修改的文件提交到本地仓库：`"git commit -a"`
+
+```
+$ git commit -a -m "update git.md"
+[master d91603c] update git.md
+ 1 file changed, 122 insertions(+), 1 deletion(-)
 ```
 
 ##### 删除文件：
@@ -264,6 +272,4 @@ remote: Resolving deltas: 100% (2/2), done.
 To https://github.com/Leyusf/git_study.git
  * [new branch]      master -> master
 ```
-
-
 
