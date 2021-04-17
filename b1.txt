@@ -1,2 +1,3 @@
 public class user;
 // 在b1分支中创建文件
+//已经被master修改了
