@@ -273,3 +273,252 @@ To https://github.com/Leyusf/git_study.git
  * [new branch]      master -> master
 ```
 
+
+
+#### 7.git分支:
+
+master是默认分支与其他分支并无区别。
+
+##### 查看分支：
+
+列出所有本地分支：
+
+`git branch`
+
+```
+$ git branch
+* master
+```
+
+列出所有远程分支：
+
+`git branch -r`
+
+```
+$ git branch -r
+  origin/master
+```
+
+列出所有本地分支和远程分支：
+
+`git branch -a`
+
+```
+$ git branch -a
+* master
+  remotes/origin/master
+```
+
+##### 创建分支：
+
+创建本地分支：
+
+`git branch <branchname>`
+
+`git branch b1`
+
+`git branch b2`
+
+```
+$ git branch
+  b1
+  b2
+* master
+```
+
+##### 切换分支：
+
+`git checkout <branchname>`
+
+`git checkout b1`
+
+```
+$ git branch
+* b1
+  b2
+  master
+```
+
+##### 推送至远程仓库分支：
+
+`git push origin <branchname>`
+
+`git push origin b1`
+
+```
+$ git push origin b1
+Logon failed, use ctrl+c to cancel basic credential prompt.
+Total 0 (delta 0), reused 0 (delta 0)
+remote:
+remote: Create a pull request for 'b1' on GitHub by visiting:
+remote:      https://github.com/Leyusf/git_study/pull/new/b1
+remote:
+To https://github.com/Leyusf/git_study.git
+ * [new branch]      b1 -> b1
+```
+
+##### 合并分支：
+
+在要合并到的分支下使用命令
+
+`git merge <branchname>`
+
+```
+zly@LAPTOP-QOH779PM MINGW64 /e/study/gitStudy/git_study (master)
+$ git merge b1
+Updating 1b1faf5..6545dc7
+Fast-forward
+ b1.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 b1.txt
+```
+
+有时，在两个不同的分支中对同一个文件的同一个部分进行了不同的修改，就会产生冲突。
+
+此时需要我们打开冲突文件并修复冲突内容，最后执行`git add`命令来标示冲突已经解决。
+
+```
+$ git merge b1
+Auto-merging b1.txt
+CONFLICT (content): Merge conflict in b1.txt
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+手动处理冲突内容。
+
+```
+zly@LAPTOP-QOH779PM MINGW64 /e/study/gitStudy/git_study (master|MERGING)
+$ git add b1.txt
+
+zly@LAPTOP-QOH779PM MINGW64 /e/study/gitStudy/git_study (master|MERGING)
+$ git commit -m "fix conflict"
+[master c3ae8d5] fix conflict
+```
+
+##### 删除本地分支：
+
+`git branch -d <branchname>`
+
+```
+$ git branch -d b2
+Deleted branch b2 (was 1b1faf5).
+```
+
+如果要删除的分支中进行了一些开发，此时执行上面的删除命令并不会删除分支，如果要坚持删除分支，可以使用 `git branch -D <branchname>`
+
+修改b1分支中的文件。
+
+```
+$ git branch -d b1
+error: The branch 'b1' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D b1'.
+```
+
+强制删除。
+
+```
+$ git branch -D b1
+Deleted branch b1 (was 68f3625).
+```
+
+##### 删除远程分支：
+
+`git push origin -d <branchname>`删除远程分支。
+
+```
+$ git push origin -d b2
+Logon failed, use ctrl+c to cancel basic credential prompt.
+To https://github.com/Leyusf/git_study.git
+ - [deleted]         b2
+```
+
+
+
+#### git标签：
+
+给某一版本打上标签，可以方便的切换标记时的状态。
+
+##### 创建新标签：
+
+使用`git tag <tagname>`创建标签
+
+`git tag v0.1`
+
+##### 列出已有标签：
+
+使用命令`git tag`
+
+```
+$ git tag
+v0.1
+```
+
+也可以使用`git show <tagname>`查看标签信息。
+
+```
+$ git show v0.1
+commit c3ae8d5960bd297e14c4c44a785fe52b8ce2991b (HEAD -> master, tag: v1.0, tag: v0.1, origin/master)
+Merge: ed9a6b4 c43839e
+Author: Leyusf <53003567+Leyusf@users.noreply.github.com>
+Date:   Sat Apr 17 21:04:43 2021 +0800
+
+    fix conflict
+
+diff --cc b1.txt
+index 64d3029,4ca1394..48b6ead
+--- a/b1.txt
++++ b/b1.txt
+@@@ -1,3 -1,3 +1,4 @@@
+  public class user;
+  // 在b1分支中创建文件
+- //已经被master修改了
+ -//在b1中进行修改
+++//已经被master修改了
+++//在b1中进行修改
+```
+
+##### 将标签推送至远程仓库：
+
+使用`git push origin <tagname>`将标签推送至远程仓库。
+
+```
+$ git push origin v0.1
+Logon failed, use ctrl+c to cancel basic credential prompt.
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/Leyusf/git_study.git
+ * [new tag]         v0.1 -> v0.1
+```
+
+##### 检出标签：
+
+一般来说，新建一个分支，指向检出的标签。
+
+使用命令`git chekout -b <branchname> <tagname>`
+
+```
+$ git checkout -b b3 v1.0
+Switched to a new branch 'b3'
+```
+
+##### 删除标签：
+
+1.删除本地标签：
+
+`git tag -d <tagname>`
+
+```
+$ git tag -d v0.1
+Deleted tag 'v0.1' (was c3ae8d5)
+```
+
+2.删除远程标签：
+
+`git push origin :refs/tags/<tagname>`
+
+```
+$ git push origin :refs/tags/v0.1
+Logon failed, use ctrl+c to cancel basic credential prompt.
+To https://github.com/Leyusf/git_study.git
+ - [deleted]         v0.1
+```
+
